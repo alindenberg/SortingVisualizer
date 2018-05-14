@@ -25,7 +25,7 @@ public class Sorter {
         this.lineWidth = lineWidth;
         this.offsetMultiple = offsetMultiple;
         this.heightMultiple = heightMultiple;
-        this.delay = 20;
+        this.delay = 100;
     }
 
     public void runSort(String sort) {
@@ -38,7 +38,7 @@ public class Sorter {
                     MergeSort(this.dataPoints, 0, this.dataPoints.length - 1);
                     break;
                 case "Quick Sort":
-                    System.out.println("Quick sort");
+                    QuickSort(this.dataPoints, 0, this.dataPoints.length - 1);
                     break;
                 case "Insertion Sort":
                     InsertionSort(this.dataPoints);
@@ -130,15 +130,37 @@ public class Sorter {
     }
 
     private void QuickSort(int[] dataPoints, int start, int end) {
-//        if(start < end) {
-//            int partitionIndex = Partition(dataPoints, start, end);
-//            QuickSort(dataPoints, start, partitionIndex - 1);
-//            QuickSort(dataPoints, partitionIndex + 1, end);
-//        }
+        if(start < end) {
+            int partitionIndex = Partition(dataPoints, start, end);
+            QuickSort(dataPoints, start, partitionIndex - 1);
+            QuickSort(dataPoints, partitionIndex + 1, end);
+        }
     }
 
     private int Partition(int[] dataPoints, int start, int end) {
+        int pivot = dataPoints[end];
+        int partitionIndex = start;
 
+        for(int i = start; i < end; i++) {
+            if(dataPoints[i] <= pivot) {
+                Swap(i, partitionIndex);
+                // Drawing animation
+                DrawDataPoint(i, Color.YELLOW);
+                DrawDataPoint(partitionIndex, Color.YELLOW, this.delay);
+                DrawDataPoint(partitionIndex, Color.RED);
+                DrawDataPoint(i, Color.RED);
+                // Increment partition index
+                partitionIndex++;
+            }
+        }
+        // Swap element at partition index with the pivot (which is at the end)
+        Swap(partitionIndex, end);
+        // Redraw final points
+//        DrawDataPoint(partitionIndex, Color.YELLOW, this.delay);
+        DrawDataPoint(partitionIndex, Color.RED);
+        DrawDataPoint(end, Color.RED);
+
+        return partitionIndex;
     }
 
     private void InsertionSort(int dataPoints[]) {
@@ -151,7 +173,7 @@ public class Sorter {
                 DrawDataPoint(j + 1, Color.YELLOW, this.delay);
                 DrawDataPoint(j + 1, Color.RED);
 
-                j = j - 1;
+                j--;
             }
             dataPoints[j + 1] = value;
             DrawDataPoint(j+1, Color.RED);

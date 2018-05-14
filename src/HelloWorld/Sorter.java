@@ -1,6 +1,7 @@
 package HelloWorld;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
+import com.sun.xml.internal.bind.v2.model.annotation.Quick;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,32 +25,28 @@ public class Sorter {
         this.lineWidth = lineWidth;
         this.offsetMultiple = offsetMultiple;
         this.heightMultiple = heightMultiple;
-        this.delay = 50;
+        this.delay = 20;
     }
 
-    public void runSort(String sort) {;
-        switch (sort) {
-            case "Bubble Sort":
-                System.out.println("Bubble sort");
-                new Thread(() -> {
+    public void runSort(String sort) {
+        new Thread(() -> {
+            switch (sort) {
+                case "Bubble Sort":
                     BubbleSort(this.dataPoints);
-                }).start();
-                break;
-            case "Merge Sort":
-                new Thread( () -> {
+                    break;
+                case "Merge Sort":
                     MergeSort(this.dataPoints, 0, this.dataPoints.length - 1);
-                }).start();
-                System.out.println("Merge sort");
-                break;
-            case "Quick Sort":
-                System.out.println("Quick sort");
-                break;
-            case "InsertionSort":
-                System.out.println("Insertion sort");
-                break;
-            default:
-                break;
-        }
+                    break;
+                case "Quick Sort":
+                    System.out.println("Quick sort");
+                    break;
+                case "Insertion Sort":
+                    InsertionSort(this.dataPoints);
+                    break;
+                default:
+                    break;
+            }
+        }).start();
     }
 
     private void MergeSort(int[] dataPoints, int begin, int end) {
@@ -118,7 +115,6 @@ public class Sorter {
                     final int nextIndexOffset = this.offsetMultiple + nextIndex * this.offsetMultiple;
                     final int nextIndexHeight = dataPoints[nextIndex] * this.heightMultiple;
 
-//                    DrawAllDataPoints(Color.RED);
                     // swap data points
                     Swap(index, nextIndex);
                     // redraw new points, highlighting the one that has been swapped forward
@@ -133,12 +129,33 @@ public class Sorter {
         }
     }
 
-    private void QuickSort() {
-        System.out.println("Quick sort");
+    private void QuickSort(int[] dataPoints, int start, int end) {
+//        if(start < end) {
+//            int partitionIndex = Partition(dataPoints, start, end);
+//            QuickSort(dataPoints, start, partitionIndex - 1);
+//            QuickSort(dataPoints, partitionIndex + 1, end);
+//        }
     }
 
-    private void InsertionSort() {
-        System.out.println("Insertion Sort");
+    private int Partition(int[] dataPoints, int start, int end) {
+
+    }
+
+    private void InsertionSort(int dataPoints[]) {
+        for(int i = 1; i < dataPoints.length; i++) {
+            int value = dataPoints[i];
+            int j = i - 1;
+
+            while (j >= 0 && dataPoints[j] > value) {
+                dataPoints[j + 1] = dataPoints[j];
+                DrawDataPoint(j + 1, Color.YELLOW, this.delay);
+                DrawDataPoint(j + 1, Color.RED);
+
+                j = j - 1;
+            }
+            dataPoints[j + 1] = value;
+            DrawDataPoint(j+1, Color.RED);
+        }
     }
 
     private void Swap(int index, int nextIndex) {

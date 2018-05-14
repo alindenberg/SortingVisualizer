@@ -17,7 +17,9 @@ public class Sorter {
     private final int lineWidth;
     private final int offsetMultiple;
     private final int heightMultiple;
+
     private final int delay;
+    private final int menuOffset;
 
     public Sorter(int[] dataPoints, GraphicsContext gc, int lineWidth, int offsetMultiple, int heightMultiple) {
         this.dataPoints = dataPoints;
@@ -25,7 +27,8 @@ public class Sorter {
         this.lineWidth = lineWidth;
         this.offsetMultiple = offsetMultiple;
         this.heightMultiple = heightMultiple;
-        this.delay = 100;
+        this.delay = 20;
+        this.menuOffset = 330;
     }
 
     public void runSort(String sort) {
@@ -156,7 +159,6 @@ public class Sorter {
         // Swap element at partition index with the pivot (which is at the end)
         Swap(partitionIndex, end);
         // Redraw final points
-//        DrawDataPoint(partitionIndex, Color.YELLOW, this.delay);
         DrawDataPoint(partitionIndex, Color.RED);
         DrawDataPoint(end, Color.RED);
 
@@ -187,7 +189,7 @@ public class Sorter {
     }
 
     private void DrawDataPoint(int index, Color color, int delay) {
-        int xOffset = 300 + offsetMultiple + index * offsetMultiple;
+        int xOffset = this.menuOffset + offsetMultiple + index * offsetMultiple;
         int height = dataPoints[index] * heightMultiple;
 
         ClearDataPoint(index);
@@ -200,7 +202,7 @@ public class Sorter {
     }
 
     private void DrawDataPoint(int index, Color color) {
-        int xOffset = 300 + this.offsetMultiple + index * this.offsetMultiple;
+        int xOffset = this.menuOffset + this.offsetMultiple + index * this.offsetMultiple;
         int height = dataPoints[index] * this.heightMultiple;
 
         ClearDataPoint(index);
@@ -210,13 +212,13 @@ public class Sorter {
     }
 
     private void ClearDataPoint(int index) {
-        int xOffset = 300 + this.offsetMultiple + index*this.offsetMultiple;
+        int xOffset = this.menuOffset + this.offsetMultiple + index*this.offsetMultiple;
         gc.clearRect(xOffset, 0 , this.lineWidth, 500);
     }
 
     private void DrawAllDataPoints(Color color) {
         for (int i = 0; i < dataPoints.length; i++)
-            DrawDataPoint(i, Color.RED);
+            DrawDataPoint(i, color);
     }
 
     private void ClearAllDataPoints() {

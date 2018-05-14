@@ -15,6 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Rectangle;
@@ -27,25 +28,28 @@ import java.util.stream.IntStream;
 
 public class Main extends Application {
 
-    private static final int screenHeight = 1000;
+    private static final int screenHeight = 500;
     private static final int screenWidth = 1000;
 
-    private static final double menuHeight = Double.MAX_VALUE;
+    private static final int menuHeight = 300;
     private static final int menuWidth = 300;
-
     private static final int lineWidth = 5;
 
+//    the initial amount that the graph will be offset in the x direction from the menu
+    private static final int baseOffset = 30;
+
+//    the multipliers for offset and height of each datapoint
     private static final int offsetMultiple = 6;
-    private static final int heightMultiple = 5;
+    private static final int heightMultiple = 4;
 
     @Override
     public void start(Stage stage) {
         stage.setTitle("Gary the Goat Rulez");
-        int[] dataPoints = IntStream.range(1, 51).toArray();
+        int[] dataPoints = IntStream.range(1, 101).toArray();
 
         Group root = new Group();
-        Scene scene = new Scene(root, 1000, 1000);
-        Canvas canvas = new Canvas(1000, 1000);
+        Scene scene = new Scene(root, 1000, 600);
+        Canvas canvas = new Canvas(1000, 600);
         root.getChildren().add(canvas);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -58,30 +62,30 @@ public class Main extends Application {
     }
 
     private void DrawGraph(GraphicsContext gc, int[] dataPoints) {
-        int xOffset = 0;
+        int xOffset = 30;
         for(int i = 0; i < dataPoints.length; i++) {
-            int height = dataPoints[i]*5;
+            int height = dataPoints[i]*this.heightMultiple;
             xOffset += offsetMultiple;
 
             gc.setFill(Color.RED);
-            gc.clearRect(menuWidth + xOffset, 500 - height, lineWidth, height);
+            gc.clearRect(menuWidth + xOffset, 0, lineWidth, 500);
             gc.fillRect(menuWidth + xOffset, 500 - height, lineWidth, height);
         }
     }
 
     private void ClearGraph(GraphicsContext gc, int[] dataPoints) {
-        int xOffset = 0;
+        int xOffset = 30;
         for(int i = 0; i < dataPoints.length; i++) {
-            int height = dataPoints[i]*5;
+            int height = dataPoints[i]*this.heightMultiple;
             xOffset += offsetMultiple;
 
-            gc.clearRect(menuWidth + xOffset, 500 - height, lineWidth, height);
+            gc.clearRect(menuWidth + xOffset, 0, lineWidth, 500);
         }
     }
 
     private void DrawMenu(Group root, int[] dataPoints, GraphicsContext gc) {
         VBox menu = new VBox();
-        menu.setMinHeight(menuHeight);
+        menu.setMaxHeight(menuHeight);
         menu.setMinWidth(menuWidth);
 
         Sorter sorter = new Sorter(dataPoints, gc, lineWidth, offsetMultiple, heightMultiple);
@@ -111,7 +115,10 @@ public class Main extends Application {
             }
         });
 
-        menu.getChildren().addAll(sortList, sortBtn, randomizeBtn);
+        HBox btnBox = new HBox();
+        btnBox.getChildren().addAll(sortBtn, randomizeBtn);
+
+        menu.getChildren().addAll(sortList, btnBox);
         root.getChildren().add(menu);
     }
 

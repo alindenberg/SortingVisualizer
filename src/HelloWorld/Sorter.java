@@ -132,53 +132,6 @@ public class Sorter {
             DrawDataPoint(i, Color.RED);
         }
     }
-//
-//        Task task = new Task<Void>() {
-//            @Override
-//            public Void call() throws Exception {
-//                int width = 5;
-//                int offsetMultiple = 6;
-//                int heightMultiple = 5;
-//                for(int i = 0; i < dataPoints.length-1; i++) {
-//                    for(int j = 0; j < dataPoints.length - i - 1; j++) {
-//                        if (dataPoints[j] > dataPoints[j + 1]) {
-//
-//                            final int index = j;
-//                            final int indexOffset = offsetMultiple + index * offsetMultiple;
-//                            final int indexHeight = dataPoints[index] * heightMultiple;
-//
-//                            final int nextIndex = j + 1;
-//                            final int nextIndexOffset = offsetMultiple + nextIndex * offsetMultiple;
-//                            final int nextIndexHeight = dataPoints[nextIndex] * heightMultiple;
-//
-//                            Platform.runLater(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    // recolor all datapoints as red, removing the highlighted one from previous iteration
-//                                    for (int i = 0; i < dataPoints.length; i++) {
-//                                        DrawDataPoint(i, Color.RED);
-//                                    }
-//                                    // swap data points
-//                                    Swap(index, nextIndex);
-//                                    // redraw new points, highlighting the one that has been swapped forward
-//                                    DrawDataPoint(nextIndex, Color.YELLOW);
-//                                    DrawDataPoint(index, Color.RED);
-//                                }
-//                            });
-//                            Thread.sleep(20);
-//                        }
-//                    }
-//                }
-//                for(int i = 0; i < dataPoints.length; i++) {
-//                    DrawDataPoint(i, Color.RED);
-//                }
-//                return null;
-//            }
-//        };
-//        Thread th = new Thread(task);
-//        th.setDaemon(true);
-//        th.start();
-//    }
 
     private void QuickSort() {
         System.out.println("Quick sort");

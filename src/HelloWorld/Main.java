@@ -33,10 +33,15 @@ public class Main extends Application {
     private static final double menuHeight = Double.MAX_VALUE;
     private static final int menuWidth = 300;
 
+    private static final int lineWidth = 5;
+
+    private static final int offsetMultiple = 6;
+    private static final int heightMultiple = 5;
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Gary the Goat Rulez");
-        int[] dataPoints = IntStream.range(1, 81).toArray();
+        int[] dataPoints = IntStream.range(1, 51).toArray();
 
         Group root = new Group();
         Scene scene = new Scene(root, 1000, 1000);
@@ -54,25 +59,23 @@ public class Main extends Application {
 
     private void DrawGraph(GraphicsContext gc, int[] dataPoints) {
         int xOffset = 0;
-        int width = 5;
         for(int i = 0; i < dataPoints.length; i++) {
             int height = dataPoints[i]*5;
-            xOffset += 6;
+            xOffset += offsetMultiple;
 
             gc.setFill(Color.RED);
-            gc.clearRect(menuWidth + xOffset, 500 - height, width, height);
-            gc.fillRect(menuWidth + xOffset, 500 - height, width, height);
+            gc.clearRect(menuWidth + xOffset, 500 - height, lineWidth, height);
+            gc.fillRect(menuWidth + xOffset, 500 - height, lineWidth, height);
         }
     }
 
     private void ClearGraph(GraphicsContext gc, int[] dataPoints) {
         int xOffset = 0;
-        int width = 5;
         for(int i = 0; i < dataPoints.length; i++) {
             int height = dataPoints[i]*5;
-            xOffset += 6;
+            xOffset += offsetMultiple;
 
-            gc.clearRect(menuWidth + xOffset, 500 - height, width, height);
+            gc.clearRect(menuWidth + xOffset, 500 - height, lineWidth, height);
         }
     }
 
@@ -81,7 +84,7 @@ public class Main extends Application {
         menu.setMinHeight(menuHeight);
         menu.setMinWidth(menuWidth);
 
-        Sorter sorter = new Sorter(dataPoints, gc);
+        Sorter sorter = new Sorter(dataPoints, gc, lineWidth, offsetMultiple, heightMultiple);
 
         ObservableList<String> sorts = FXCollections.observableArrayList("Bubble Sort", "Merge Sort", "Quick Sort", "Insertion Sort");
         ListView sortList = new ListView(sorts);

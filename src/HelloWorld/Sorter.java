@@ -1,14 +1,7 @@
 package HelloWorld;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
-
-import java.awt.*;
 
 public class Sorter {
 

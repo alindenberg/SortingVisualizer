@@ -41,8 +41,9 @@ public class Main extends Application {
         root.getChildren().add(canvas);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
+//        Background color
         gc.setFill(Color.AQUA);
-        gc.fillRect(0, 0, 1000, 1000);
+        gc.fillRect(0, 0, 1000, 600);
 
         DrawMenu(root, dataPoints, gc);
         DrawGraph(gc, dataPoints);
@@ -52,23 +53,20 @@ public class Main extends Application {
     }
 
     private void DrawGraph(GraphicsContext gc, int[] dataPoints) {
+        gc.setFill(Color.BLACK);
         int xOffset = 30;
         for(int i = 0; i < dataPoints.length; i++) {
             int height = dataPoints[i]*this.heightMultiple;
             xOffset += offsetMultiple;
-
-            gc.setFill(Color.BLACK);
-//            gc.clearRect(menuWidth + xOffset, 0, lineWidth, 500);
             gc.fillRect(menuWidth + xOffset, 500 - height, lineWidth, height);
         }
     }
 
     private void ClearGraph(GraphicsContext gc, int[] dataPoints) {
+        gc.setFill(Color.AQUA);
         int xOffset = 30;
         for(int i = 0; i < dataPoints.length; i++) {
-            int height = dataPoints[i]*this.heightMultiple;
             xOffset += offsetMultiple;
-            gc.setFill(Color.AQUA);
             gc.fillRect(menuWidth + xOffset, 0, lineWidth, 500);
         }
     }
@@ -88,9 +86,9 @@ public class Main extends Application {
         sortBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Sorting");
                 String selectedSort = (String)sortList.getSelectionModel().getSelectedItem();
                 sorter.runSort(selectedSort);
+//                System.out.println("run time is: " + runTime);
             }
         });
 
@@ -98,7 +96,6 @@ public class Main extends Application {
         randomizeBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Randomizing");
                 ClearGraph(gc, dataPoints);
                 RandomizeData(dataPoints);
                 DrawGraph(gc, dataPoints);

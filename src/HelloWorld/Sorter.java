@@ -7,12 +7,13 @@ public class Sorter {
 
     private int[] dataPoints;
     private GraphicsContext gc;
+
     private final int lineWidth;
+    private final int menuOffset;
     private final int offsetMultiple;
     private final int heightMultiple;
 
     private final int delay;
-    private final int menuOffset;
 
     private final Color dataPointColor;
     private final Color highlightColor;
@@ -85,23 +86,32 @@ public class Sorter {
             if (leftArr[leftIndex] <= rightArr[rightIndex]) {
                 dataPoints[arrIndex] = leftArr[leftIndex];
                 leftIndex++;
+
+                DrawDataPoint(arrIndex, this.highlightColor, this.delay);
+                DrawDataPoint(arrIndex, this.dataPointColor);
             } else {
                 dataPoints[arrIndex] = rightArr[rightIndex];
                 rightIndex++;
+
+                DrawDataPoint(arrIndex, this.highlightColor, this.delay);
+                DrawDataPoint(arrIndex, this.dataPointColor);
             }
-            DrawDataPoint(arrIndex, this.dataPointColor, this.delay);
             arrIndex++;
         }
         while (leftIndex < leftArrLength) {
             dataPoints[arrIndex] = leftArr[leftIndex];
-            DrawDataPoint(arrIndex, this.dataPointColor, this.delay);
+
+            DrawDataPoint(arrIndex, this.highlightColor, this.delay);
+            DrawDataPoint(arrIndex, this.dataPointColor);
 
             leftIndex++;
             arrIndex++;
         }
         while (rightIndex < rightArrLength) {
             dataPoints[arrIndex] = rightArr[rightIndex];
-            DrawDataPoint(arrIndex, this.dataPointColor, this.delay);
+
+            DrawDataPoint(arrIndex, this.highlightColor, this.delay);
+            DrawDataPoint(arrIndex, this.dataPointColor);
 
             rightIndex++;
             arrIndex++;

@@ -1,20 +1,29 @@
 package HelloWorld;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -82,6 +91,19 @@ public class Main extends Application {
         ListView sortList = new ListView(sorts);
         sortList.getSelectionModel().select(0);
 
+//        Animation delay slider & label
+        Slider animationDelaySlider = new Slider(0, 100, 50);
+        animationDelaySlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                sorter.SetAnimationDelay(100 - (int)animationDelaySlider.getValue());
+            }
+        });
+
+        Label sliderLabel = new Label("Sort speed");
+        sliderLabel.setLabelFor(animationDelaySlider);
+        sliderLabel.setUnderline(true);
+
         Button sortBtn = new Button("Sort Data");
         sortBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -105,7 +127,7 @@ public class Main extends Application {
         sortBtn.setMinWidth(menuWidth);
         randomizeBtn.setMinWidth(menuWidth);
 
-        menu.getChildren().addAll(sortList, sortBtn, randomizeBtn);
+        menu.getChildren().addAll(sortList, sliderLabel, animationDelaySlider, sortBtn, randomizeBtn);
         menu.setSpacing(10);
 
         root.getChildren().add(menu);

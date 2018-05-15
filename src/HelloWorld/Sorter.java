@@ -7,13 +7,12 @@ public class Sorter {
 
     private int[] dataPoints;
     private GraphicsContext gc;
+    private int delay;
 
     private final int lineWidth;
     private final int menuOffset;
     private final int offsetMultiple;
     private final int heightMultiple;
-
-    private final int delay;
 
     private final Color dataPointColor;
     private final Color highlightColor;
@@ -26,7 +25,7 @@ public class Sorter {
         this.lineWidth = lineWidth;
         this.offsetMultiple = offsetMultiple;
         this.heightMultiple = heightMultiple;
-        this.delay = 20;
+        this.delay = 50;
         this.menuOffset = menuWidth + 30;
 
         this.dataPointColor = Color.BLACK;
@@ -232,5 +231,10 @@ public class Sorter {
     private void ClearAllDataPoints() {
         for(int i = 0; i < this.dataPoints.length; i++)
             ClearDataPoint(i);
+    }
+
+    public void SetAnimationDelay(int value) {
+        this.delay = value;
+        System.out.println("New animation delay is: " + this.delay);
     }
 }

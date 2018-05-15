@@ -21,14 +21,23 @@ public class Sorter {
     private final int delay;
     private final int menuOffset;
 
-    public Sorter(int[] dataPoints, GraphicsContext gc, int lineWidth, int offsetMultiple, int heightMultiple) {
+    private final Color dataPointColor;
+    private final Color highlightColor;
+    private final Color backgroundColor;
+
+    public Sorter(int[] dataPoints, GraphicsContext gc, int lineWidth,
+                  int offsetMultiple, int heightMultiple, int menuWidth) {
         this.dataPoints = dataPoints;
         this.gc = gc;
         this.lineWidth = lineWidth;
         this.offsetMultiple = offsetMultiple;
         this.heightMultiple = heightMultiple;
         this.delay = 20;
-        this.menuOffset = 330;
+        this.menuOffset = menuWidth + 30;
+
+        this.dataPointColor = Color.BLACK;
+        this.highlightColor = Color.YELLOW;
+        this.backgroundColor = Color.AQUA;
     }
 
     public void runSort(String sort) {
@@ -87,19 +96,19 @@ public class Sorter {
                 dataPoints[arrIndex] = rightArr[rightIndex];
                 rightIndex++;
             }
-            DrawDataPoint(arrIndex, Color.RED, this.delay);
+            DrawDataPoint(arrIndex, this.dataPointColor, this.delay);
             arrIndex++;
         }
         while (leftIndex < leftArrLength) {
             dataPoints[arrIndex] = leftArr[leftIndex];
-            DrawDataPoint(arrIndex, Color.RED, this.delay);
+            DrawDataPoint(arrIndex, this.dataPointColor, this.delay);
 
             leftIndex++;
             arrIndex++;
         }
         while (rightIndex < rightArrLength) {
             dataPoints[arrIndex] = rightArr[rightIndex];
-            DrawDataPoint(arrIndex, Color.RED, this.delay);
+            DrawDataPoint(arrIndex, this.dataPointColor, this.delay);
 
             rightIndex++;
             arrIndex++;
@@ -110,26 +119,21 @@ public class Sorter {
         for (int i = 0; i < dataPoints.length - 1; i++) {
             for (int j = 0; j < dataPoints.length - i - 1; j++) {
                 if (dataPoints[j] > dataPoints[j + 1]) {
-                    final int index = j;
-                    final int indexOffset = this.offsetMultiple + index * this.offsetMultiple;
-                    final int indexHeight = dataPoints[index] * this.heightMultiple;
-
-                    final int nextIndex = j + 1;
-                    final int nextIndexOffset = this.offsetMultiple + nextIndex * this.offsetMultiple;
-                    final int nextIndexHeight = dataPoints[nextIndex] * this.heightMultiple;
+                    int index = j;
+                    int nextIndex = j + 1;
 
                     // swap data points
                     Swap(index, nextIndex);
                     // redraw new points, highlighting the one that has been swapped forward
-                    DrawDataPoint(index, Color.RED);
-                    DrawDataPoint(nextIndex, Color.YELLOW, this.delay);
-                    DrawDataPoint(nextIndex, Color.RED);
+                    DrawDataPoint(index, this.dataPointColor);
+                    DrawDataPoint(nextIndex, this.highlightColor, this.delay);
+                    DrawDataPoint(nextIndex, this.dataPointColor);
                 }
             }
         }
-        for (int i = 0; i < dataPoints.length; i++) {
-            DrawDataPoint(i, Color.RED);
-        }
+//        for (int i = 0; i < dataPoints.length; i++) {
+//            DrawDataPoint(i, this.dataPointColor);
+//        }
     }
 
     private void QuickSort(int[] dataPoints, int start, int end) {
@@ -148,10 +152,10 @@ public class Sorter {
             if(dataPoints[i] <= pivot) {
                 Swap(i, partitionIndex);
                 // Drawing animation
-                DrawDataPoint(i, Color.YELLOW);
-                DrawDataPoint(partitionIndex, Color.YELLOW, this.delay);
-                DrawDataPoint(partitionIndex, Color.RED);
-                DrawDataPoint(i, Color.RED);
+                DrawDataPoint(i, this.highlightColor);
+                DrawDataPoint(partitionIndex, this.highlightColor, this.delay);
+                DrawDataPoint(partitionIndex, this.dataPointColor);
+                DrawDataPoint(i, this.dataPointColor);
                 // Increment partition index
                 partitionIndex++;
             }
@@ -159,8 +163,8 @@ public class Sorter {
         // Swap element at partition index with the pivot (which is at the end)
         Swap(partitionIndex, end);
         // Redraw final points
-        DrawDataPoint(partitionIndex, Color.RED);
-        DrawDataPoint(end, Color.RED);
+        DrawDataPoint(partitionIndex, this.dataPointColor);
+        DrawDataPoint(end, this.dataPointColor);
 
         return partitionIndex;
     }
@@ -172,13 +176,13 @@ public class Sorter {
 
             while (j >= 0 && dataPoints[j] > value) {
                 dataPoints[j + 1] = dataPoints[j];
-                DrawDataPoint(j + 1, Color.YELLOW, this.delay);
-                DrawDataPoint(j + 1, Color.RED);
+                DrawDataPoint(j + 1, this.highlightColor, this.delay);
+                DrawDataPoint(j + 1, this.dataPointColor);
 
                 j--;
             }
             dataPoints[j + 1] = value;
-            DrawDataPoint(j+1, Color.RED);
+            DrawDataPoint(j+1, this.dataPointColor);
         }
     }
 
@@ -213,7 +217,8 @@ public class Sorter {
 
     private void ClearDataPoint(int index) {
         int xOffset = this.menuOffset + this.offsetMultiple + index*this.offsetMultiple;
-        gc.clearRect(xOffset, 0 , this.lineWidth, 500);
+        gc.setFill(Color.AQUA);
+        gc.fillRect(xOffset, 0 , this.lineWidth, 500);
     }
 
     private void DrawAllDataPoints(Color color) {

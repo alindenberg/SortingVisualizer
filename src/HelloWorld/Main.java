@@ -28,15 +28,10 @@ import java.util.stream.IntStream;
 
 public class Main extends Application {
 
-    private static final int screenHeight = 500;
-    private static final int screenWidth = 1000;
-
     private static final int menuHeight = 300;
-    private static final int menuWidth = 300;
-    private static final int lineWidth = 5;
+    private static final int menuWidth = 200;
 
-//    the initial amount that the graph will be offset in the x direction from the menu
-    private static final int baseOffset = 30;
+    private static final int lineWidth = 5;
 
 //    the multipliers for offset and height of each datapoint
     private static final int offsetMultiple = 6;
@@ -53,6 +48,8 @@ public class Main extends Application {
         root.getChildren().add(canvas);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.AQUA);
+        gc.fillRect(0, 0, 1000, 1000);
 
         DrawMenu(root, dataPoints, gc);
         DrawGraph(gc, dataPoints);
@@ -67,8 +64,8 @@ public class Main extends Application {
             int height = dataPoints[i]*this.heightMultiple;
             xOffset += offsetMultiple;
 
-            gc.setFill(Color.RED);
-            gc.clearRect(menuWidth + xOffset, 0, lineWidth, 500);
+            gc.setFill(Color.BLACK);
+//            gc.clearRect(menuWidth + xOffset, 0, lineWidth, 500);
             gc.fillRect(menuWidth + xOffset, 500 - height, lineWidth, height);
         }
     }
@@ -78,23 +75,23 @@ public class Main extends Application {
         for(int i = 0; i < dataPoints.length; i++) {
             int height = dataPoints[i]*this.heightMultiple;
             xOffset += offsetMultiple;
-
-            gc.clearRect(menuWidth + xOffset, 0, lineWidth, 500);
+            gc.setFill(Color.AQUA);
+            gc.fillRect(menuWidth + xOffset, 0, lineWidth, 500);
         }
     }
 
     private void DrawMenu(Group root, int[] dataPoints, GraphicsContext gc) {
         VBox menu = new VBox();
         menu.setMaxHeight(menuHeight);
-        menu.setMinWidth(menuWidth);
+        menu.setMaxWidth(menuWidth);
 
-        Sorter sorter = new Sorter(dataPoints, gc, lineWidth, offsetMultiple, heightMultiple);
+        Sorter sorter = new Sorter(dataPoints, gc, lineWidth, offsetMultiple, heightMultiple, menuWidth);
 
         ObservableList<String> sorts = FXCollections.observableArrayList("Bubble Sort", "Merge Sort", "Quick Sort", "Insertion Sort");
         ListView sortList = new ListView(sorts);
         sortList.getSelectionModel().select(0);
 
-        Button sortBtn = new Button("Sort");
+        Button sortBtn = new Button("Sort Data");
         sortBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -115,10 +112,12 @@ public class Main extends Application {
             }
         });
 
-        HBox btnBox = new HBox();
-        btnBox.getChildren().addAll(sortBtn, randomizeBtn);
+        sortBtn.setMinWidth(menuWidth);
+        randomizeBtn.setMinWidth(menuWidth);
 
-        menu.getChildren().addAll(sortList, btnBox);
+        menu.getChildren().addAll(sortList, sortBtn, randomizeBtn);
+        menu.setSpacing(10);
+
         root.getChildren().add(menu);
     }
 

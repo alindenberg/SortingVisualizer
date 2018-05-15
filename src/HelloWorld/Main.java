@@ -87,7 +87,7 @@ public class Main extends Application {
 
         Sorter sorter = new Sorter(dataPoints, gc, lineWidth, offsetMultiple, heightMultiple, menuWidth);
 
-        ObservableList<String> sorts = FXCollections.observableArrayList("Bubble Sort", "Merge Sort", "Quick Sort", "Insertion Sort");
+        ObservableList<String> sorts = FXCollections.observableArrayList("Bubble Sort", "Merge Sort", "Quick Sort", "Insertion Sort", "Selection Sort");
         ListView sortList = new ListView(sorts);
         sortList.getSelectionModel().select(0);
 

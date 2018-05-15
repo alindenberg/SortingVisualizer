@@ -48,6 +48,9 @@ public class Sorter {
                 case "Insertion Sort":
                     InsertionSort(this.dataPoints);
                     break;
+                case "Selection Sort":
+                    SelectionSort(this.dataPoints);
+                    break;
                 default:
                     break;
             }
@@ -185,6 +188,26 @@ public class Sorter {
             }
             dataPoints[j + 1] = value;
             DrawDataPoint(j+1, this.dataPointColor);
+        }
+    }
+
+    private void SelectionSort(int[] dataPoints) {
+        for(int i = 0; i < dataPoints.length - 1; i++) {
+            int minIndex = i;
+            for(int j = i+1; j < dataPoints.length; j++) {
+                if(dataPoints[j] < dataPoints[minIndex]) {
+                    minIndex = j;
+                }
+            }
+
+            DrawDataPoint(minIndex, this.highlightColor, this.delay);
+
+            Swap(i, minIndex);
+
+            DrawDataPoint(minIndex, this.dataPointColor);
+            DrawDataPoint(i, this.highlightColor, this.delay);
+
+            DrawDataPoint(i, this.dataPointColor);
         }
     }
 
